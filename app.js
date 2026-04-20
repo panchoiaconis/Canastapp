@@ -197,13 +197,30 @@ function register() {
 }
 
 function loginGoogle() {
-  // Simulate Google login with a demo user
-  const gUser = db.users.find(u => u.email === 'admin@demo.com') || db.users[0];
-  if (gUser) {
-    setCurrentUser(gUser);
-  } else {
-    showToast('(Demo) Google login: usá los datos de prueba');
-  }
+
+const provider = new firebase.auth.GoogleAuthProvider();
+
+firebase.auth()
+.signInWithPopup(provider)
+.then((result) => {
+
+const user = result.user;
+
+const newUser = {
+
+id: user.uid,
+name: user.displayName,
+email: user.email,
+avatar: user.photoURL
+
+};
+
+setCurrentUser(newUser);
+})
+.catch((error) => {
+console.error("Google Login Error:", error);
+alert("Error iniciando sesión con Google");
+});
 }
 
 function setCurrentUser(user) {
