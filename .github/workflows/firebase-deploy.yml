@@ -2,16 +2,17 @@ name: Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - main  # O la rama que uses
+      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      # Si tu app necesita compilarse (React, Vue, etc.)
-      - run: npm ci && npm run build 
-      
+
+      # IMPORTANTE: Si tu web es solo HTML/CSS/JS (sin React/Vue), 
+      # borra la siguiente línea (run: npm ci...). Si la dejas y no tienes
+      # un archivo package.json, el despliegue fallará siempre.
+    
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
