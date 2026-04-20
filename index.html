@@ -388,7 +388,32 @@
 
 <!-- Toast -->
 <div id="toast" class="toast hidden"></div>
+<!-- Toast -->
 
+<!-- Firebase Scripts -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+<script>
+  // ESTO LO SACAS DE: Configuración del proyecto > General > Tus Apps (ícono </>)
+const firebaseConfig = {
+  apiKey: "AIzaSyAlJEGcV1xCmRRMIMslfyLoYlGVWkvPd1U",
+  authDomain: "canastapp-630a9.firebaseapp.com",
+  projectId: "canastapp-630a9",
+  storageBucket: "canastapp-630a9.firebasestorage.app",
+  messagingSenderId: "849761257469",
+  appId: "1:849761257469:web:9c5fa7790088683ee77b94",
+  measurementId: "G-X6TYCSV5XX"
+};
+  
+  // Inicializamos Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<!-- Tu app principal (DEBE ir después de Firebase) -->
+<script src="app.js"></script>
+</body>
+</html>
 <script src="app.js"></script>
 </body>
 </html>
