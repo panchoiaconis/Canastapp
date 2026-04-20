@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0A0A0F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CanastApp">
+<link rel="manifest" href="manifest.json">
+<title>CanastApp — Gestión de Básquet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <!-- AUTH SCREEN -->
+  <div id="screen-auth" class="screen active">
+    <div class="auth-bg">
+      <div class="auth-orb orb1"></div>
+      <div class="auth-orb orb2"></div>
+      <div class="auth-orb orb3"></div>
+    </div>
+    <div class="auth-container">
+      <div class="auth-logo">
+        <div class="logo-ball">
+          <svg viewBox="0 0 60 60" fill="none">
+            <circle cx="30" cy="30" r="28" fill="#FF6B35" stroke="#FF8C5A" stroke-width="1.5"/>
+            <path d="M30 2 Q30 30 30 58" stroke="#1A0A02" stroke-width="2" fill="none"/>
+            <path d="M2 30 Q30 30 58 30" stroke="#1A0A02" stroke-width="2" fill="none"/>
+            <path d="M10 12 Q30 22 50 12" stroke="#1A0A02" stroke-width="1.5" fill="none"/>
+            <path d="M10 48 Q30 38 50 48" stroke="#1A0A02" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <h1>CanastApp</h1>
+        <p>Gestión de equipos amateur</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuthTab('login')">Iniciar sesión</button>
+        <button class="auth-tab" onclick="switchAuthTab('register')">Registrarse</button>
+      </div>
+
+      <div id="auth-login" class="auth-form">
+        <div class="field-group">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="tu@email.com" autocomplete="email">
+        </div>
+        <div class="field-group">
+          <label>Contraseña</label>
+          <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn-primary" onclick="login()">Entrar</button>
+        <div class="auth-divider"><span>o</span></div>
+        <button class="btn-google" onclick="loginGoogle()">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Continuar con Google
+        </button>
+      </div>
+
+      <div id="auth-register" class="auth-form hidden">
+        <div class="field-group">
+          <label>Nombre completo</label>
+          <input type="text" id="reg-name" placeholder="Juan Pérez">
+        </div>
+        <div class="field-group">
+          <label>Email</label>
+          <input type="email" id="reg-email" placeholder="tu@email.com">
+        </div>
+        <div class="field-group">
+          <label>Contraseña</label>
+          <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres">
+        </div>
+        <button class="btn-primary" onclick="register()">Crear cuenta</button>
+        <div class="auth-divider"><span>o</span></div>
+        <button class="btn-google" onclick="loginGoogle()">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Continuar con Google
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEAMS LIST SCREEN -->
+  <div id="screen-teams" class="screen">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <div class="user-avatar" id="header-avatar">JD</div>
+        <div>
+          <div class="top-bar-title">Mis Equipos</div>
+          <div class="top-bar-sub" id="header-user-name">Juan Deportista</div>
+        </div>
+      </div>
+      <button class="icon-btn" onclick="logout()" title="Cerrar sesión">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+
+    <div class="teams-grid" id="teams-list"></div>
+
+    <div class="teams-actions">
+      <button class="btn-primary" onclick="showModal('modal-create-team')">+ Crear equipo</button>
+      <button class="btn-secondary" onclick="showModal('modal-join-team')">Unirme a equipo</button>
+    </div>
+
+    <!-- Notification banner -->
+    <div id="notif-banner" class="notif-banner hidden">
+      <span id="notif-text"></span>
+      <button onclick="document.getElementById('notif-banner').classList.add('hidden')">✕</button>
+    </div>
+  </div>
+
+  <!-- TEAM HOME SCREEN -->
+  <div id="screen-team" class="screen">
+    <div class="top-bar">
+      <button class="icon-btn" onclick="goBack()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M19 12H5M5 12l7 7M5 12l7-7"/></svg>
+      </button>
+      <div class="team-header-info">
+        <div class="top-bar-title" id="team-name-header">Los Rockets</div>
+        <div class="team-code-badge" id="team-code-header">Código: ABC123</div>
+      </div>
+      <button class="icon-btn" id="team-menu-btn" onclick="toggleTeamMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+      </button>
+      <div id="team-dropdown" class="dropdown hidden">
+        <button onclick="showModal('modal-members'); closeDropdowns()">Ver miembros</button>
+        <button id="btn-manage-requests" onclick="showModal('modal-requests'); closeDropdowns()" class="hidden">Solicitudes de ingreso</button>
+        <button id="btn-leave-team" onclick="leaveTeam(); closeDropdowns()">Abandonar equipo</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" data-tab="fixture" onclick="switchTab('fixture')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Fixture
+      </button>
+      <button class="tab-btn" data-tab="payments" onclick="switchTab('payments')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Pagos
+      </button>
+      <button class="tab-btn" data-tab="messages" onclick="switchTab('messages')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Novedades
+      </button>
+    </div>
+
+    <!-- TAB: FIXTURE -->
+    <div id="tab-fixture" class="tab-content active">
+      <div class="next-match-card" id="next-match-card">
+        <div class="next-match-label">Próximo partido</div>
+        <div class="next-match-rival" id="next-rival">—</div>
+        <div class="next-match-meta" id="next-meta"></div>
+        <div id="next-match-alerts" class="next-alerts"></div>
+      </div>
+
+      <div class="section-header">
+        <h3>Fixture completo</h3>
+        <button id="btn-add-match" class="btn-sm" onclick="showModal('modal-add-match')">+ Partido</button>
+      </div>
+
+      <div id="matches-list" class="matches-list"></div>
+    </div>
+
+    <!-- TAB: PAYMENTS -->
+    <div id="tab-payments" class="tab-content hidden">
+      <div class="section-header">
+        <h3>Pagos y asistencia</h3>
+      </div>
+      <div id="payments-list" class="payments-list"></div>
+    </div>
+
+    <!-- TAB: MESSAGES -->
+    <div id="tab-messages" class="tab-content hidden">
+      <div class="section-header">
+        <h3>Novedades del equipo</h3>
+        <button class="btn-sm" onclick="showModal('modal-new-post')">+ Publicar</button>
+      </div>
+      <div id="posts-list" class="posts-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ MODALS ============ -->
+
+  <!-- Create Team -->
+  <div id="modal-create-team" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-create-team')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Crear equipo</h3>
+        <button class="modal-close" onclick="closeModal('modal-create-team')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field-group">
+          <label>Nombre del equipo</label>
+          <input type="text" id="new-team-name" placeholder="Los Rockets">
+        </div>
+        <div class="field-group">
+          <label>Mínimo de jugadores por partido</label>
+          <input type="number" id="new-team-min" placeholder="5" min="3" max="20" value="5">
+        </div>
+        <button class="btn-primary" onclick="createTeam()">Crear equipo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Join Team -->
+  <div id="modal-join-team" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-join-team')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Unirme a equipo</h3>
+        <button class="modal-close" onclick="closeModal('modal-join-team')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field-group">
+          <label>Código del equipo</label>
+          <input type="text" id="join-code" placeholder="ABC123" style="text-transform:uppercase;letter-spacing:3px;font-size:1.2rem;text-align:center">
+        </div>
+        <p class="hint">Pedile el código al administrador de tu equipo.</p>
+        <button class="btn-primary" onclick="joinTeam()">Solicitar ingreso</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Match -->
+  <div id="modal-add-match" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-add-match')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="add-match-title">Agregar partido</h3>
+        <button class="modal-close" onclick="closeModal('modal-add-match')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field-group">
+          <label>Rival</label>
+          <input type="text" id="match-rival" placeholder="Los Lakers">
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label>Fecha</label>
+            <input type="date" id="match-date">
+          </div>
+          <div class="field-group">
+            <label>Hora</label>
+            <input type="time" id="match-time">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Ubicación</label>
+          <input type="text" id="match-location" placeholder="Gimnasio Municipal">
+        </div>
+        <div class="field-group">
+          <label>Resultado (opcional)</label>
+          <input type="text" id="match-result" placeholder="82-76">
+        </div>
+        <button class="btn-primary" onclick="saveMatch()">Guardar partido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Attendance Modal -->
+  <div id="modal-attendance" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-attendance')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Asistencia y pago</h3>
+        <button class="modal-close" onclick="closeModal('modal-attendance')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="match-summary-mini" id="attendance-match-info"></div>
+
+        <h4 style="margin: 16px 0 8px;">¿Vas a ir?</h4>
+        <div class="attendance-options">
+          <button class="attend-btn yes" onclick="setAttendance('yes')">
+            <span>✓</span> Voy
+          </button>
+          <button class="attend-btn no" onclick="setAttendance('no')">
+            <span>✗</span> No voy
+          </button>
+          <button class="attend-btn maybe" onclick="setAttendance('maybe')">
+            <span>?</span> Duda
+          </button>
+        </div>
+
+        <h4 style="margin: 20px 0 8px;">Confirmación de pago</h4>
+        <div id="payment-current-status"></div>
+        <div id="payment-input-section">
+          <div class="field-group">
+            <label>Mensaje para el administrador</label>
+            <textarea id="payment-message" rows="3" placeholder="Ej: Pagué por transferencia el lunes, número de operación 12345..."></textarea>
+          </div>
+          <button class="btn-primary" onclick="submitPaymentMessage()">Enviar confirmación</button>
+        </div>
+
+        <!-- Admin approval section -->
+        <div id="admin-payment-section" class="hidden">
+          <h4 style="margin: 20px 0 8px;">Validar pago</h4>
+          <div id="admin-payment-message" class="admin-player-message"></div>
+          <div class="admin-action-row">
+            <button class="btn-success" onclick="approvePayment()">✓ Aprobar</button>
+            <button class="btn-danger" onclick="rejectPayment()">✗ Rechazar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Members Modal -->
+  <div id="modal-members" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-members')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Miembros del equipo</h3>
+        <button class="modal-close" onclick="closeModal('modal-members')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="members-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Requests Modal -->
+  <div id="modal-requests" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-requests')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Solicitudes de ingreso</h3>
+        <button class="modal-close" onclick="closeModal('modal-requests')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="requests-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Post Modal -->
+  <div id="modal-new-post" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-new-post')">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Nueva publicación</h3>
+        <button class="modal-close" onclick="closeModal('modal-new-post')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="post-type-selector">
+          <button class="post-type-btn active" data-type="post" onclick="selectPostType('post')">Novedad</button>
+          <button class="post-type-btn" data-type="poll" onclick="selectPostType('poll')">Encuesta</button>
+        </div>
+
+        <div id="post-form">
+          <div class="field-group">
+            <label>Título</label>
+            <input type="text" id="post-title" placeholder="Cambio de horario...">
+          </div>
+          <div class="field-group">
+            <label>Contenido</label>
+            <textarea id="post-content" rows="4" placeholder="Contale al equipo..."></textarea>
+          </div>
+        </div>
+
+        <div id="poll-form" class="hidden">
+          <div class="field-group">
+            <label>Pregunta</label>
+            <input type="text" id="poll-question" placeholder="¿A qué hora preferís entrenar?">
+          </div>
+          <div id="poll-options-container">
+            <div class="field-group"><label>Opción 1</label><input type="text" class="poll-option-input" placeholder="Opción 1"></div>
+            <div class="field-group"><label>Opción 2</label><input type="text" class="poll-option-input" placeholder="Opción 2"></div>
+          </div>
+          <button class="btn-secondary btn-sm" onclick="addPollOption()">+ Agregar opción</button>
+        </div>
+
+        <button class="btn-primary" onclick="createPost()">Publicar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post Detail Modal -->
+  <div id="modal-post-detail" class="modal-overlay hidden" onclick="closeModalOutside(event,'modal-post-detail')">
+    <div class="modal modal-large">
+      <div class="modal-header">
+        <h3 id="post-detail-title">Título</h3>
+        <button class="modal-close" onclick="closeModal('modal-post-detail')">✕</button>
+      </div>
+      <div class="modal-body" id="post-detail-body">
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
