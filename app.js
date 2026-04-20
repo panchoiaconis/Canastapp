@@ -197,30 +197,47 @@ function register() {
 }
 
 function loginGoogle() {
-
-const provider = new firebase.auth.GoogleAuthProvider();
-
-firebase.auth()
-.signInWithPopup(provider)
-.then((result) => {
-
-const user = result.user;
-
-const newUser = {
-
-id: user.uid,
-name: user.displayName,
-email: user.email,
-avatar: user.photoURL
-
-};
-
-setCurrentUser(newUser);
-})
-.catch((error) => {
-console.error("Google Login Error:", error);
-alert("Error iniciando sesión con Google");
-});
+  const provider = new firebase.auth.GoogleAuthProvider();
+  
+  firebase.auth()
+    .signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+      
+      // Crear objeto de usuario
+      const newUser = {
+        id: user.uid,
+        name: user.displayName || 'Usuario',
+        email: user.email,
+        avatar: user.photoURL
+      };
+      
+      // Guardar en localStorage (o Firestore si migraste)
+      const existingUser = db.users.find(u => u.email === user.email);
+      if (!existingUser) {
+        db.users.push(newUser);
+        saveDB(db);
+      }
+      
+      setCurrentUser(newUser);
+      showToast('¡Bienvenido ' + user.displayName + '!');
+    })
+    .catch((error) => {
+      console.error("Google Login Error:", error);
+      console.error("Código:", error.code);
+      console.error("Mensaje:", error.message);
+      
+      // Mensajes de error específicos
+      if (error.code === 'auth/popup-blocked') {
+        showToast('El popup fue bloqueado. Habilita popups en el navegador.');
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        showToast('Cancelaste el login con Google');
+      } else if (error.code === 'auth/network-request-failed') {
+        showToast('Error de conexión. Verifica tu internet.');
+      } else {
+        showToast('Error: ' + error.message);
+      }
+    });
 }
 
 function setCurrentUser(user) {
