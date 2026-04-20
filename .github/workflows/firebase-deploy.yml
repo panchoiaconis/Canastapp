@@ -1,0 +1,20 @@
+name: Deploy to Firebase Hosting
+on:
+  push:
+    branches:
+      - main  # O la rama que uses
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      # Si tu app necesita compilarse (React, Vue, etc.)
+      - run: npm ci && npm run build 
+      
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROYECTO }}'
+          channelId: live
+          projectId: TU_ID_DE_FIREBASE_AQUI
